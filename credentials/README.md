@@ -1,6 +1,20 @@
 # Key generation
 
-We will be using the full chain so make sure you include privkey, fullchain, and chain.
+The only command I used in order to generate production grade certificates was as follows.
+
+```
+sudo certbot certonly --webroot -w /Users/leathan/Mubot/node_modules/hubot-server/public/ -d leathan.xyz,www.leathan.xyz,api.leathan.xyz,leat.io,www.leat.io,api.leat.io
+```
+https://certbot.eff.org/ is the greate utility that offers free CA's.
+
+There are many options, and its worth a bit of a read but `--webroot` just means anywhere on your website that it can both write to locally, and then http remotely.
+
+If you do not have a server currently running there is a `--standalone` option which is handy that just creates a server for you and does it.
+
+Theres more but another options is `--apache` ofcoure, for the legacy LAMP stack ofc.
+
+
+Once you have your keys (you can also self sign) we will be using privkey, fullchain, and chain.
 
 __Your https server options may look like so__
 
@@ -13,20 +27,6 @@ const options = {
 };
 ```
 
-https://certbot.eff.org/ is a greate utility that offers FREE CA's.
-
-The only command I used in order to receive my certificate was as follows.
-
-```
-sudo certbot certonly --webroot -w /Users/leathan/Mubot/node_modules/hubot-server/public/ -d leathan.xyz,www.leathan.xyz,api.leathan.xyz,leat.io,www.leat.io,api.leat.io
-```
-
-
-There are many options, and its worth a bit of a read but `--webroot` just means anywhere on your website that it can both write to locally, and then http remotely.
-
-If you do not have a server currently running there is a `--standalone` option which is handy that just creates a server for you and does it.
-
-Theres more but another options is `--apache` ofcoure, for the legacy LAMP stack ofc.
 
 # Self signed
 
@@ -63,6 +63,6 @@ const fs = require('fs'), path = require('path');
 const options = {
     key: fs.readFileSync (path.join(__dirname, 'credentials/ssl.key')), // Your deterministic key (pub key info IS here too)
     cert: fs.readFileSync(path.join(__dirname, 'credentials/ssl.crt')), // Your certificate information (pub key included)
-    ca: fs.readFileSync  (path.join(__dirname, 'credentials/server.csr')) // certificate signing request result
+    ca: fs.readFileSync  (path.join(__dirname, 'credentials/server.csr')) // certificate signing request
 };
 ```
