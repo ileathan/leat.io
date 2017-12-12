@@ -28,7 +28,7 @@ If you do not have a server currently running there is a `--standalone` option w
 
 Theres more but another options is `--apache` ofcoure, for the legacy LAMP stack ofc.
 
-
+```bash
 # Self signed
 
 I really recommend using letsencrypt's certbot. I did self signed certs for many years and the world just isnt there yet. *Someday.*
@@ -52,6 +52,9 @@ openssl x509 -req -days 36500 -in server.csr -signkey server.key -out server.crt
 
 mv server.crt ssl.crt
 mv server.key ssl.key
+
+# \n ewline
+```
 
 Now in your options do 
 
