@@ -1,5 +1,5 @@
 # leat-client
 
-Here we will keep and in the future, compartmentalize, although atm i cant kind memory leaks worth mention.
+Here we will keep and in the future, compartmentalize our clinet side code.
 
 repl hacking should work *with lots of love* with these entire files.
