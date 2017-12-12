@@ -88,7 +88,7 @@ lC._mark = lC.toStorage({mark: Date.now()})
 /*
 * Load mining configuations.
 *
-* A copy of this is still held by the server, but that will probably depreciate.
+* A copy of this is no longer held by the server, it depreciated.
 *
 */
 lC.miningConfig = lC.fromStorage('miningConfig') || lC.toStorage({
