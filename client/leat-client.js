@@ -343,7 +343,10 @@ lC.setMiningConfig = function(type, increase) {
 
 lC.miner.on('found', data => {
   // Add information about the found block to the work log.
-  $('#work-log').append('<li><span><font style="color:blue"><b>Job done ('+data.job_id+') </b></font><b>['+data.nonce+']&nbsp;</b></span>'+data.result+'</li>');
+  $('#work-log').append(
+    '<li><span><font style="color:blue"><b>Job done ('+data.job_id+') </b></font><b>['+data.nonce+']&nbsp;</b></span>'+data.result+'</li>'
+  )
+  ;
   ++lC.sharesFound
   ;
   if(!lC.chatBoxIsScrolled.trans)
@@ -433,30 +436,37 @@ lC.toColor = u =>
 lC.load = () => {
 
   /* Even if dom isnt ready, we got the user */
-  lC.miner.stop();
-  lC.miner._user = lC.username;
-  lC.miner.start();
+  lC.miner.stop()
+  ;
+  lC.miner._user = lC.username
+  ;
+  lC.miner.start()
+  ;
   /* Our hack to ensure that if the server is ready and dom isnt we still load */
-  delete lC._needLoad;
+  delete lC._needLoad
+  ;
 
   lC._chatbox !== 'chat' && lC.resizeChat('down', 'hack')
- 
+  ;
   /* populates #pieChart svg and .server-stats */
-  setInterval(lC.refreshStats, 600000); lC.refreshStats();
-
+  setInterval(lC.refreshStats, 600000); lC.refreshStats()
+  ;
   /* Ill remove this try catch, but it helped once..., musta been lag induced */
   try {
     /* After the loading animation is up for 5.777 seconds show graph */
-    lC.loadGraph();
+    lC.loadGraph()
+    ;
   } catch(e) {
-    window.location.href = window.location.pathname;
+    window.location.href = window.location.pathname
+    ;
   }
 
   setTimeout(() => {
 
-    $('#loading,.loading').remove();
+    $('#loading,.loading').remove()
+    ;
     $('.chart').removeClass('myhide')
-
+    ;
   }, 5777)
 
   /* 
@@ -471,16 +481,16 @@ lC.load = () => {
      if(!lC.chatBoxIsScrolled.trans) {
        $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight)
      }
-  });
-
+  })
+  ;
   /* Print to the work log that were running */
-  if(lC.miner.isRunning()) {
+  if(lC.miner.isRunning())
     $('#work-log').append(
       '<li><span><b>Mining as <font style="color:' + lC.toColor(lC.username) + '">'
       + lC.username + ' </font></b> '+ new Date().toLocaleDateString() +'.</span></li>'
-    );
-  }
-
+    )
+    ;
+  ;
   /* Populate the chatroom */
   for(let i = 0, l = lC.chatMsgs.length; i < l; ++i) {
     let m = lC.chatMsgs[i];
@@ -503,20 +513,18 @@ lC.load = () => {
     $('#transactions').append(html);
   }
 
-
-
   /* Populate the transaction log with freindly msg if its empty */
-  if(lC.transactions.length === 0) {
+  if(lC.transactions.length === 0)
     $('#transactions').append('<li><b> No history :(</b></span></li>');
-  }
-
+  ;
   lC.showChat(lC._chatBox, lC._chatBox === 'chat')
+  ;
   /* Scroll the chatbox to the end. */
-  $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight); 
-
+  $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight)
+  ;
   if(lC.username.slice(0, 6) !== 'Guest ') {
 
-     /* MOVE THIS ENTIRE THING INTO THE HTML FILE AND HIDE IT WITH A CLASS */
+    /* MOVE THIS ENTIRE THING INTO THE HTML FILE AND HIDE IT WITH A CLASS */
 
     $('#user-stats-container').html(
         /* Draw our menu bar. */
@@ -561,70 +569,94 @@ lC.load = () => {
       + '</p>'
     )
     ;
-
-    $('#minefor-link').on('mouseover', () => setTimeout(()=>$('#minefor-input').focus(), 0));
-    $('#transfer-link').on('mouseover', () => setTimeout(()=>$('#transfer-amount-input').focus(), 0));
+    $('#minefor-link').on('mouseover', 
+      () => setTimeout(()=>$('#minefor-input').focus(), 0)
+    )
+    ;
+    $('#transfer-link').on('mouseover', 
+      () => setTimeout(()=>$('#transfer-amount-input').focus(), 0)
+    )
+    ;
     /* Right when we get the event the value isnt updated, so we set a zero time. */
-    $('#minefor-input').on('keydown', e => setTimeout(mineForInputChange.bind(e), 0))
-
-    $('#shares').text(lC.shares);
-    $('#balance').text(lC.balance);
+    $('#minefor-input').on('keydown', 
+      e => setTimeout(mineForInputChange.bind(e), 0)
+    )
+    ;
+    $('#shares').text(lC.shares)
+    ;
+    $('#balance').text(lC.balance)
+    ;
     if(lC.isMiningFor) {
-      $('#minefor-input').val(lC.isMiningFor);
-      $('#receiving-user').text(lC.isMiningFor);
+      $('#minefor-input').val(lC.isMiningFor)
+      ;
+      $('#receiving-user').text(lC.isMiningFor)
+      ;
       $('#minefor-info').css('color', 'gold')
+      ;
     }
     $('.right-half').css('margin-top', '-500px')
-  } else {
-    $('#login-container').html('<a href="#loginModal" class="login-button" data-toggle="modal" data-target=".login-modal-sm"><p class="login-text"><span class="login-btn-text">Log In (Free!)</span></p></a>')
-  }
-
+    ;
+  } else
+    $('#login-container').html(
+      '<a href="#loginModal" class="login-button" data-toggle="modal" data-target=".login-modal-sm">
+      '<p class="login-text"><span class="login-btn-text">Log In (Free!)</span></p></a>'
+     )
+  ;
   /* Might remove both of these */
   $(window).bind({
     'resize': fthrottle(windowResize, 500),
     'beforeunload': windowUnloaded
   })
-
+  ;
   $('form').submit((e) => {
-    if(!$('#msg').val().trim()) return;
-   
-    lC.socket.emit('chat message', $('#msg').val());
-    $('#msg').val('');
+    if(!$('#msg').val().trim())
+      return
+    ;
+    lC.socket.emit('chat message', $('#msg').val())
+    ;
+    $('#msg').val('')
+    ;
     e.preventDefault()
-  });
-
+    ;
+  })
+  ;
   /* Keep track of the last scroll */
-  var lastScroll = {};
+  var lastScroll = {}
+  ;
   var cb = $('.chatbox')
+  ;
   /* Automagically scroll the user down. */
-  var skip;
-  cb.on('scroll', fthrottle(ScrollHandler, 500));
+  var skip
+  ;
+  cb.on('scroll', fthrottle(ScrollHandler, 500))
+  ;
   function ScrollHandler(event) {
     //if(skip = !skip) return;
-    var currentScroll = $(this).scrollTop();
-
+    var currentScroll = $(this).scrollTop()
+    ;
     if(currentScroll < lastScroll[lC._chatBox]) {
-      lC.chatBoxIsScrolled[lC._chatBox] = currentScroll;
+      lC.chatBoxIsScrolled[lC._chatBox] = currentScroll
+      ;
       lC.toStorage({
         'chatBoxIsScrolled': lC.chatBoxIsScrolled
-      });
-
+      })
+      ;
     }
-
-    lastScroll[lC._chatBox] = currentScroll;
+    lastScroll[lC._chatBox] = currentScroll
+    ;
     if(cb[0].scrollHeight - cb.scrollTop() <= cb.outerHeight() - 2) {
       delete lC.chatBoxIsScrolled[lC._chatBox]
-
+      ;
       lC.toStorage({
         'chatBoxIsScrolled': lC.chatBoxIsScrolled
-      });
-
+      })
+      ;
     }
   }
-
-  /* Reset the login modal when it closes,
-   * and focus username when it opens 
-   */
+  /*
+  * Reset the login modal when it closes,
+  * and focus username when it opens 
+  */
   $('#loginModal').on({
     'hidden.bs.modal': lC.resetLogin,
     'shown.bs.modal': ()=>$('#username').focus()
@@ -672,12 +704,17 @@ function cssRGBToHex(cssRGB) {
     , res = [], carry = 0
   ;
   while(i-- || carry) {
-    let cur = digits[i] | 0;
-    total = (carry + cur) % l;
-    carry = cur - total;
+    let cur = digits[i] || 0
+    ;
+    total = (carry + cur) % l
+    ;
+    carry = cur - total
+    ;
     res.push(total)
+    ;
   }
-  return res.map(_=>alphabet[_]);
+  return res.map(_=>alphabet[_])
+  ;
 }
 lC.enable2fa = () => {
 
@@ -846,20 +883,24 @@ function lowPowerModeDialog() {
   alert("Low Power Mode' is enabled because you throttled over the max. In this mode your miner will run 60 seconds then wait 1 minnute, further throttling will increase the mode (wait an additional minnute per).")
 }
 function windowUnloaded() {
-  lC.socket.close();
+  lC.socket.close()
+  ;
   lC.socket.destroy()
+  ;
   // return ""
 }
 function windowResize() {
   if($(window).innerWidth() > 1028) {
     /* Pretty sure I can just .toggleClass('bh') here lol */
     $('.chatbox')[(lC._chatBox  !== 'chat' ? 'add' : 'remove') + 'Class']('bh')
+    ;
     lC._chatBox !== 'chat' && lC.resizeChat('down')
-  } else {
+    ;
+  } else
      void 0
     /* Should we resize up now? */
     // console.log("Do we need to do anything special here? (window.innerWidth < 1028)")
-  }
+  ;
 }
 /*
 * function throttle to not lag out on dom event spams.
@@ -909,31 +950,30 @@ lC.games = lC.fromStorage('games') || lC.toStorage({'games': []})
 lC.pokerQuickJoin = () => {
 
   lC.poker || lC.loadPoker()
-
+  ;
   lC.socket.emit('poker quick join', {}, console.log)
-
+  ;
 }
 ;
 
 lC.loadPoker = () => {
 
-  if(!lC.shares) return 'No balance.';
-
+  if(!lC.shares)
+    return 'No balance.'
+  ;
   lC.poker = { 
     set luckyS(s) {
       //$('#luckyS').val(s);
       socket.emit('poker set lucky string', s)
     }
   }
-
+  ;
   lC.poker.buildDeck = block => {
     const cards = [
       '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', 'TH', 'JH', 'QH', 'KH', 'AH', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', 'TD', 'JD', 'QD', 'KD', 'AD',
       '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', 'TS', 'JS', 'QS', 'KS', 'AS', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', 'TC', 'JC', 'QC', 'KC', 'AC'
-    ];
-     
-    
-
+    ]
+    ;   
   }
   ;
   lC.socket.on("block found", lC.poker.buildDeck)
@@ -947,8 +987,6 @@ lC.loadPoker = () => {
 
 }
 ;
-
-
 
 lC.selectGame = (span, game) => {
   // If the span is already selected, deselect it.
