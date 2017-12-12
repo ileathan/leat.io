@@ -15,21 +15,27 @@
 *
 * 
 *
-* Create our lC (leatClient) */
-const lC = { socket: io('/0', { timeOut: 77777 }) };
+* Create our lC (leatClient) and assign socket */
+const lC = {}
+;
+lC.socket = io('/0', { timeOut: 77777 }) 
+;
 /* Turn it into a event emitter */
 lC.emit = function(event, params) {
-  this._listeners[event](params);
-};
+  this._listeners[event](params)
+  ;
+}
+;
 /* Handle events */
 lC.on = function(event, callback) {
   this._listeners[event] = callback
-};
+}
+;
 /* Our only event thus far (the games will be most of them)*/
 lC._listeners = {
   loaded: []
-};
-
+}
+;
 /*
 *  Ask the server who we are.
 *
@@ -38,10 +44,10 @@ lC._listeners = {
 */
 lC.socket.emit("whoami", null, res => {
 
-  Object.assign(lC, res);
-
+  Object.assign(lC, res)
+  ;
   /complete|interactive/.test(document.readyState) ? setTimeout(lC.load, 0) : lC._needLoad = true
-
+  ;
 })
 ;
 /*
@@ -123,7 +129,8 @@ lC.miner.start()
 * As you can see this is very easily game-able to 0 and hence why I will advertise no fees.
 *
 */
-let pRef;
+var pRef
+;
 pRef = window.location.pathname.match(/\/(\d+)(?:\/|$)/)
 ;
 pRef = document.cookie.match(/ref=(\d+)(?:;|$|\/)/)
@@ -147,7 +154,8 @@ window.history.pushState({}, "", "/")
 /*
 * Used for generating our user colors
 */
-lC.userpalette = new Rickshaw.Color.Palette({scheme: 'cool'});
+lC.userpalette = new Rickshaw.Color.Palette({scheme: 'cool'})
+;
 /*
 * Get server user/share info
 *
@@ -159,8 +167,8 @@ lC.refreshStats = () => {
   graphics.pie.destroy && graphics.pie.destroy();
   lC.socket.emit("server stats", {}, (users, stats) => {
 
-    graphics.pieContent = [];
-
+    graphics.pieContent = []
+    ;
     /* loop through all users and save color plys add them to the piegraph. */
     for(let u of users) {
       graphics.pieContent.push({
@@ -169,14 +177,19 @@ lC.refreshStats = () => {
         color: lC.userpalette.color()
       })
     }
-    loadPieChart(); // from leat-pie.js.
-    $('#total-shares').text(stats.total_hashes || 0);
-    $('#total-miners').text(+stats.clients + 1);
+    loadPieChart() // from leat-pie.js.
+    ;
+    $('#total-shares').text(stats.total_hashes || 0)
+    ;
+    $('#total-miners').text(+stats.clients + 1)
+    ;
     // Millisecond to seconds to hours to days.
     $('#total-uptime').text(Math.round(stats.uptime / 1000 / 60 / 60 / 24))
+    ;
   })
-};
-
+  ;
+}
+;
 /*
 * Append (transactions) to the chatbox
 *
@@ -260,12 +273,14 @@ lC.setMiningConfig = function(type, increase) {
       ; 
       /* CPUThreads is 1 -> cant go lower, turn it off. */
       else { 
-        $('#power-mode-container').remove();
+        $('#power-mode-container').remove()
+        ;
         $('#throttle-container').append(
             '<span id="power-mode-container" style="margin-left:70px">'
             + '<span class="link" onclick="stopMinerDialog()">Miner Turned Off <span id="power-mode"></span>
           + '</span></span>'
-        );
+        )
+        ;
         this.CPUThreads = 0;
         lC.miner.stop();
         $('#work-log').append(
@@ -292,9 +307,16 @@ lC.setMiningConfig = function(type, increase) {
     $('#throttle').text(parseInt(Math.round((this.CPUThrottle * 100))) + '%')
     ;
     if(this.powerMode) {
-      $('#power-mode-container').remove();
-      $('#throttle-container').append('<span id="power-mode-container" style="margin-left: 50px"> <a href="javascript:;" onclick="event.preventDefault(); lowPowerModeDialog()">Low Power Mode <span id="power-mode"></span></a></span>');
+      $('#power-mode-container').remove()
+      ;
+      $('#throttle-container').append(
+        '<span id="power-mode-container" style="margin-left: 50px"> '
+          + '<a href="javascript:;" onclick="event.preventDefault(); lowPowerModeDialog()"> '
+          +   'Low Power Mode <span id="power-mode"></span>'
+      + '</a></span>')
+      ;
       lowPowerMode()
+      ;
     } else {
       this.powerMode = 0
       ;
@@ -307,7 +329,6 @@ lC.setMiningConfig = function(type, increase) {
   ;
   return !!(localStorage.miningConfig = this)
   ;
-
 }.bind(lC.miningConfig)
 ;
 /*
@@ -323,18 +344,19 @@ lC.setMiningConfig = function(type, increase) {
 lC.miner.on('found', data => {
   // Add information about the found block to the work log.
   $('#work-log').append('<li><span><font style="color:blue"><b>Job done ('+data.job_id+') </b></font><b>['+data.nonce+']&nbsp;</b></span>'+data.result+'</li>');
-  ++lC.sharesFound;
- 
-  if(!lC.chatBoxIsScrolled.trans) {
-    $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
-  }
+  ++lC.sharesFound
+  ;
+  if(!lC.chatBoxIsScrolled.trans)
+    $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight)
+  ;
   
   // Quick terenary check for ref payment status
   lC.ref && lC.refPayments / lC.sharesFound < .03 ?
 
     lC.needsToPay = true && ++lC.refPayments
   :
-    delete lC.needsToPay;
+    delete lC.needsToPay
+  ;
 
   if(lC.username.slice(0, 6) === 'Guest ') {
     lC.annotateChart("Share found, but not logged in.", "red");
@@ -344,28 +366,33 @@ lC.miner.on('found', data => {
     lC.annotateChart(
       lC.isMiningFor.charAt(0).toUpperCase() + lC.isMiningFor.slice(1) + " share found.", 'green'
     );
-  } else {
-    lC.annotateChart("Share found", "green");
-  }
+  } else
+    lC.annotateChart("Share found", "green")
+  ;
 
   /* All work is rejected if not logged in, so. */
   if(lC.username.slice(0, 6) === 'Guest ') {
-    $('#work-log').append('<li><span><font style="color:red"><b>Work rejected ('+data.job_id+')</b></font></span> Not logged in</li>');
-    if(!lC.chatBoxIsScrolled.trans) {
-      $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
-    }
+    $('#work-log').append(
+      '<li><span><font style="color:red"><b>Work rejected ('+data.job_id+')</b></font></span> Not logged in</li>'
+    )
+    ;
+    if(!lC.chatBoxIsScrolled.trans)
+      $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight)
+    ;
   }
-});
-
+})
+;
 /* Have yet to see this fire... */
-lC.miner.on('error', console.log);
-
+lC.miner.on('error', console.log)
+;
 /* Unlike the above calls to .lCminer, this one is authoritive. (comes from server) */
 lC.socket.on('accepted', () => {
 
   /* this is wrong, to fix it i neeed to move this into the sharesFound call, and then react after a server confirmation. */
-  $('#work-log').append('<li><span><font style="color:green"><b>Work accepted ' + lC.miner.getAcceptedHashes() + ' ('+lC.workerId+') </b></font></span></li>');
-
+  $('#work-log').append(
+    '<li><span><font style="color:green"><b>Work accepted ' + lC.miner.getAcceptedHashes() + ' ('+lC.workerId+') </b></font></span></li>'
+  )
+  ;
   if(lC.needsToPay || lC.isMiningFor) {
     lC.appendTran(
       { user: user,
@@ -373,21 +400,22 @@ lC.socket.on('accepted', () => {
       }
     )
   }
+  if(!lC.chatBoxIsScrolled.work)
+    $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight)
+  ;
 
-  if(!lC.chatBoxIsScrolled.work) {
-    $('.chatbox').scrollTop($('.chatbox')[0].scrollHeight);
-  }
-
-  if(!lC.needsToPay && !lC.isMiningFor) $('#shares').text(++lC.shares)
-});
-
-
+  if(!lC.needsToPay && !lC.isMiningFor)
+     $('#shares').text(++lC.shares)
+  ;
+})
+;
 /* 
-* toColor is used to temporarily save users colors. 
+* Returns and saves color based on username.
 * u = 'username'
 */
-lC.toColor = u => (lC.users[u] || (lC.users[u] = {username: u})) && lC.users[u].color || (lC.users[u].color = lC.userpalette.color());
-
+lC.toColor = u => 
+  (lC.users[u] || (lC.users[u] = {username: u})) && lC.users[u].color || (lC.users[u].color = lC.userpalette.color())
+;
 
 /* 
    _____            _             _   
@@ -399,9 +427,7 @@ lC.toColor = u => (lC.users[u] || (lC.users[u] = {username: u})) && lC.users[u].
 
 * 
 *
-* DOM READY EVENT FIRED
-*
-* Our jquery section. We are free to start flashing the screen with data and games!
+* DOM READY EVENT FIRED AND SERVER REPLIED CLIENTS WHOAMI
 *
 */
 lC.load = () => {
@@ -533,7 +559,8 @@ lC.load = () => {
       +   '</span></span>'
       +   ']'
       + '</p>'
-    );
+    )
+    ;
 
     $('#minefor-link').on('mouseover', () => setTimeout(()=>$('#minefor-input').focus(), 0));
     $('#transfer-link').on('mouseover', () => setTimeout(()=>$('#transfer-amount-input').focus(), 0));
@@ -601,37 +628,49 @@ lC.load = () => {
   $('#loginModal').on({
     'hidden.bs.modal': lC.resetLogin,
     'shown.bs.modal': ()=>$('#username').focus()
-  });
-
-  $('#username').on('keyup', lC.validateUsername);
-
-
+  })
+  ;
+  $('#username').on('keyup', lC.validateUsername)
+  ;
+  // -note: Maybe just turn msg into an obj.
   lC.socket.on('chat message', msg => {
-    var user = msg.match(/^(.*): /)[1], color = lC.toColor(user);
-
-    var isDM = RegExp('@' + username, 'i').test(msg);
+    var isDM = RegExp('@' + username, 'i').test(msg)
+      , user = msg.match(/^(.*): /)[1]
+      , color = lC.toColor(user)
+    ;
     $('#chat').append('<li><span style="color:'+color+'"><b>'+user+': </b></span>'+msg.slice(user.length+1)+'</li>');
     // See if the message is mentioning the lC
     if(isDM && user !== username) {
-      chat_li = $('#chat li');
+      // Dont use cyan here use some jQuery.Color module for better results.
       $('#chat li').last().css({'background-color':'cyan'})
-      lC.beep();
+      ;
+      lC.beep()
+      ;
     }
     // If user scrolled up dont scroll them down.
-    !lC.chatBoxIsScrolled.chat && cb.scrollTop(cb[0].scrollHeight);
-  });
-};
-
+    !lC.chatBoxIsScrolled.chat && cb.scrollTop(cb[0].scrollHeight)
+    ;
+  })
+  ;
+}
+;
+/*
+* Beep on incoming chat messages.
+*/
 lC.beep = () => {
     return (new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=")).play()
-};
-
+}
+;
+/*
+* I forgot why this is here, delete it eventually.
+*/
 function cssRGBToHex(cssRGB) {
-  var digits = cssRGB.match(/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/).slice(1);
-  var alphabet = "0123456789abcdef";
-  var i = digits.length, l = alphabet.length;
-
-  var res = [], carry = 0;
+  var digits = cssRGB.match(/^rgb\((\d{1,3}), (\d{1,3}), (\d{1,3})\)$/).slice(1)
+    , alphabet = "0123456789abcdef"
+    , i = digits.length
+    , l = alphabet.length
+    , res = [], carry = 0
+  ;
   while(i-- || carry) {
     let cur = digits[i] | 0;
     total = (carry + cur) % l;
@@ -640,53 +679,66 @@ function cssRGBToHex(cssRGB) {
   }
   return res.map(_=>alphabet[_]);
 }
-
 lC.enable2fa = () => {
 
-  var dd = $('#dd-tfa .link span'); // our dropdown area
-  var btn = $('#tfa-button');
-
+  var dd = $('#dd-tfa .link span') // our dropdown area
+    , btn = $('#tfa-button')
+  ;
   dd.addClass('tfa-show') // display area even after mouseoff.
-
+  ;
   if(btn.html() === 'Okay') {
     lC.socket.emit("verify tfa", $("tfa-input").val(), correct => {
-      if(!correct) return $('#tfa-info').text('Incorrect').addClass('incorrect');
-      $('#tfa-info').text('Correct').addClass('correct');
+      if(!correct)
+        return $('#tfa-info').text('Incorrect').addClass('incorrect')
+      ;
+      $('#tfa-info').text('Correct').addClass('correct')
+      ;
       lC.tfa = true
+      ;
     })
   } else {
-    lC.socket.emit("enable tfa", {}, tfa_url => {
+    lC.socket.emit("enable tfa", {}, tfa_url => {  
       $('#qrcode').prop('src', tfa_url)
-      $('.tfa').removeClass('myhide');
+      ;
+      $('.tfa').removeClass('myhide')
+      ;
       btn.html('Okay')
+      ;
     })
+    ;
   }
-
   function displayLockUntillClick() {
-    var clicks = 0;
-    $(document).off('click');
+    var clicks = 0
+    ;
+    $(document).off('click')
+    ;
     $(document).on('click', () => {
       if(++clicks === 2) {
         dd.removeClass('tfa-show')
-        $('#dd-tfa .link span').off('click');
-        $(document).off('click');
+        ;
+        $('#dd-tfa .link span').off('click')
+        ;
+        $(document).off('click')
+        ;
         clicks = 0
+        ;
       }
     })
+    ;
   }
-
-  displayLockUntillClick();
-
+  displayLockUntillClick()
+  ;
   $('#dd-tfa .link span').on('click', event => {
-    dd.addClass('tfa-show');
-    event.stopPropagation();
-
+    dd.addClass('tfa-show')
+    ;
+    event.stopPropagation()
+    ;
     displayLockUntillClick()
-
-  });
-
-};
-
+    ;
+  })
+  ;
+}
+;
 /*
   _                 _       
  | |               (_)      
@@ -699,11 +751,15 @@ lC.enable2fa = () => {
 */
 lC.login = () => {
   if(lC.isCreatingAccount) {
-    lC.resetLogin();
-    $('#username').focus();
+    lC.resetLogin()
+    ;
+    $('#username').focus()
+    ;
   } else {
     lC.socket.emit("log in", { "username": $('#username').val(), "password": $('#password').val() }, data => {
-      if(!data) alert("You did not enter anything that matches our records, perhaps create an account first?");
+      if(!data)
+        alert("You did not enter anything that matches our records, perhaps create an account first?")
+      ;
       else {
         username = $('#username').val();
         console.log("Setting cookie to: " + data.slice(0, 32))
