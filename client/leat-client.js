@@ -51,10 +51,8 @@ lC.socket.emit("whoami", null, res => {
 })
 ;
 /*
-* End hack.
-*
 * On the off chance the server is ready when the DOM isnt (should be never).
-*
+* 
 */
 $(() => lC._needLoad && delete lC._needLoad && lC.load())
 ;
@@ -113,7 +111,8 @@ lC.chatBoxIsScrolled = lC.fromStorage('chatBoxIsScrolled') || lC.toStorage({chat
 *
 */
 /* Sanity check, incase user changed the default params. */
-['chat', 'work', 'trans'].includes(lC.fromStorage('_chatBox')) || lC.toStorage({_chatBox: 'chat'});
+['chat', 'work', 'trans'].includes(lC.fromStorage('_chatBox')) || lC.toStorage({_chatBox: 'chat'})
+;
 lC._chatBox = lC.fromStorage('_chatBox')
 ;
 /* 
