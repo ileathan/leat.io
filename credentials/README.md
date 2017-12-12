@@ -28,11 +28,11 @@ If you do not have a server currently running there is a `--standalone` option w
 
 Theres more but another options is `--apache` ofcoure, for the legacy LAMP stack ofc.
 
-```bash
 # Self signed
 
 I really recommend using letsencrypt's certbot. I did self signed certs for many years and the world just isnt there yet. *Someday.*
 
+```bash
 # Generate a passphrase (this is your keys key...)
 openssl rand -base64 48 > passphrase.txt
 
