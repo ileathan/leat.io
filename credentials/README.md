@@ -24,7 +24,8 @@ const options = {
     key: fs.readFileSync (path.join(__dirname, 'credentials/privkey.pem')),
     cert: fs.readFileSync(path.join(__dirname, 'credentials/fullchain.pem')),
     ca: fs.readFileSync  (path.join(__dirname, 'credentials/chain.pem'))
-};
+}
+;
 ```
 
 
@@ -64,7 +65,7 @@ const options = {
     key: fs.readFileSync (path.join(__dirname, 'credentials/ssl.key')), // Your deterministic key (pub key info IS here too)
     cert: fs.readFileSync(path.join(__dirname, 'credentials/ssl.crt')), // Your certificate information (pub key included)
     ca: fs.readFileSync  (path.join(__dirname, 'credentials/server.csr')) // certificate signing request
-};
-
+}
+;
 ```
 Note that the browsers now need you to get in their trusted section.. Usually an option to import/export in pkcs12 format
