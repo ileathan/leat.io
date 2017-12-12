@@ -10,7 +10,8 @@ For mac the command to internally reverse port forward:
 ```bash
 echo -e "rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 4343\nrdr pass inet proto tcp from any to any port 80 -> 127.0.0.1 port 8080" | sudo pfctl -ef -
 ```
-In fact to verify the keys match and it runs modularly lets do that. 
+
+## Verify keys match and it runs modularly
 
 Type:
 
