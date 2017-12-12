@@ -7,11 +7,11 @@ sudo certbot certonly --webroot -w /Users/leathan/Mubot/node_modules/hubot-serve
 ```
 https://certbot.eff.org/ is the greate utility that offers free CA's.
 
-There are many options, and its worth a bit of a read but `--webroot` just means anywhere on your website that it can both write to locally, and then http remotely.
+`--webroot` just means anywhere on your website that it can both write to locally, and then http remotely.
 
-If you do not have a server currently running there is a `--standalone` option which is handy that just creates a server for you and does it.
+If you do not have a server currently running there is a `--standalone` option. 
 
-Theres more but another options is `--apache` ofcoure, for the legacy LAMP stack ofc.
+Yet another options is `--apache` ofcourse for legacy LAMP, for more you can read the `--help`
 
 
 Once you have your keys (you can also self sign) we will be using privkey, fullchain, and chain.
