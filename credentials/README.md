@@ -68,4 +68,4 @@ const options = {
 }
 ;
 ```
-Note that the browsers now need you to get in their trusted section (or click 'proceed to unsafe').. Usually an option to import/export in pkcs12 format
+Note that the browsers now need you to get in their trusted section (or click 'proceed to unsafe').. Usually an option to import/export in pkcs12 format.
