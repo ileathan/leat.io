@@ -16,7 +16,7 @@ lS = new leatServer;
 ```
 
 You should get a massive looking JSON object. Good, now scroll to the top and verify the `server.key` 
-it will be a long hexidecimal number and it 2d...2d0a4d4949457041494241414b4341514541796d
+it will be a long hexidecimal number and it should match `2d...2d0a4d4949457041494241414b4341514541796d...`
 
 Or more easily
 
