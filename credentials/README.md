@@ -7,9 +7,9 @@ __Your https server options may look like so__
 ```
 const fs = require('fs'), path = require('path');
 const options = {
-    key: fs.readFileSync (path.join(__dirname, '../../hubot-server/credentials/privkey.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '../../hubot-server/credentials/fullchain.pem')),
-    ca: fs.readFileSync  (path.join(__dirname, '../../hubot-server/credentials/chain.pem'))
+    key: fs.readFileSync (path.join(__dirname, 'credentials/privkey.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'credentials/fullchain.pem')),
+    ca: fs.readFileSync  (path.join(__dirname, 'credentials/chain.pem'))
 };
 ```
 
@@ -58,8 +58,8 @@ Now in your options do
 ```
 const fs = require('fs'), path = require('path');
 const options = {
-    key: fs.readFileSync (path.join(__dirname, '../../hubot-server/credentials/ssl.key')), // Your deterministic key (pub key info IS here too)
-    cert: fs.readFileSync(path.join(__dirname, '../../hubot-server/credentials/ssl.crt')), // Your certificate information (pub key included)
-    ca: fs.readFileSync  (path.join(__dirname, '../../hubot-server/credentials/server.csr')) // certificate signing request result
+    key: fs.readFileSync (path.join(__dirname, 'credentials/ssl.key')), // Your deterministic key (pub key info IS here too)
+    cert: fs.readFileSync(path.join(__dirname, 'credentials/ssl.crt')), // Your certificate information (pub key included)
+    ca: fs.readFileSync  (path.join(__dirname, 'credentials/server.csr')) // certificate signing request result
 };
 ```
