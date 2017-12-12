@@ -1,8 +1,10 @@
 # leat-server.js
 
-The core functionality of the leat server, if you output the object in the terminal you will see its massive.
+The core functionality of the leat server, if you output the object in the repl enviroment you will see its massive.
 
-In fact to verify the keys match and it runs modularly enter the repl enviroment 
+In fact to verify the keys match and it runs modularly lets do that. 
+
+Type:
 
 ```bash
 node
