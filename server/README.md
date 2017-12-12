@@ -1,7 +1,15 @@
-# leat-server.js
+# leat-server
 
 The core functionality of the leat server, if you output the object in the repl enviroment you will see its massive.
 
+You should port forward inbound port `8080` to you `80` and port forward `4343` to `443`, and ensure `3000` opens.
+Otherwise simply edit the code or pass in set your an `EXPRESS_PORT` or even just a `PORT`. and a `EXPRESS_SECURE_PORT` and `SECURE_PORT`.
+
+For mac the command to internally reverse port forward:
+
+```bash
+echo -e "rdr pass inet proto tcp from any to any port 443 -> 127.0.0.1 port 4343\nrdr pass inet proto tcp from any to any port 80 -> 127.0.0.1 port 8080" | sudo pfctl -ef -
+```
 In fact to verify the keys match and it runs modularly lets do that. 
 
 Type:
